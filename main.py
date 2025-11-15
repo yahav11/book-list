@@ -20,11 +20,17 @@ def get_book(book_id: int):
 @app.post("/books")
 def add_book(book: dict):
     global counter
+    if "title" not in book or "author" not in book or "year" not in book:
+        raise HTTPException(
+            status_code=400,
+            detail="the fields author,year and title are mandatory"
+        )
     new_book = {
         "id": counter,
-        "title": book.get("title"),
-        "author": book.get("author")
-    }
+        "title": book["title"],
+        "author": book["author"],
+        "year": book["year"],
+        }
     books.append(new_book)
     counter += 1
     return new_book
